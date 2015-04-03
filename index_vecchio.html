@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Emidio Torre</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<style>
+			body {
+				background-color: #f0f0f0;
+				margin: 0px;
+				overflow-x: hidden;
+				font-family: Monospace;
+			}
+
+			a {
+				color:#0078ff;
+			}
+		</style>
+		<link href="css/bootstrap.css" rel="stylesheet">
+		<link href="css/custom.css" rel="stylesheet">
+	</head>
+	<body>
+	
+		<script src="js/three.min.js"></script>
+		<script src="js/CubeGeometry.js"></script>
+		<script src="js/renderers/Projector.js"></script>
+		<script src="js/renderers/CanvasRenderer.js"></script>
+		<script src="js/effects/AsciiEffect.js"></script>
+
+		
+
+		<script>
+
+			var SEPARATION = 180, AMOUNTX = 15, AMOUNTY = 15;
+
+			var container, stats;
+
+			var camera, controls, scene, renderer;
+
+			var particles, particle, count = 0;
+
+			var start = Date.now();
+
+			var mouseX = 0, mouseY = 0;
+
+			var windowHalfX = window.innerWidth / 2;
+
+			var windowHalfY = window.innerHeight / 2;
+
+			init();
+			animate();
+
+			function init() {
+
+				var width = window.innerWidth || 2;
+				var height = window.innerHeight || 2;
+
+				container = document.createElement( 'div' );
+				container.style.position = 'fixed';
+				document.body.appendChild( container );
+
+				var info = document.createElement( 'div' );
+				info.style.position = 'absolute';
+				info.style.top = '10px';
+				info.style.width = '100%';
+				info.style.height = '100%';
+				info.style.textAlign = 'center';
+
+
+				
+				container.appendChild(info);
+
+				camera = new THREE.PerspectiveCamera( 70, width / height, 1, 1000 );
+				camera.position.y = 150;
+				camera.position.z = 500;
+
+				scene = new THREE.Scene();
+
+				particles = new Array();
+
+				var light = new THREE.PointLight( 0xffffff );
+				light.position.set( 500, 500, 500 );
+				scene.add( light );
+
+				var light = new THREE.PointLight( 0xffffff, 0.25 );
+				light.position.set( - 500, - 500, - 500 );
+				scene.add( light );
+
+				var PI2 = Math.PI * 2;
+				var material = new THREE.MeshLambertMaterial( { shading: THREE.FlatShading });
+
+				var i = 0;
+
+				for ( var ix = 0; ix < AMOUNTX; ix ++ ) {
+
+					for ( var iy = 0; iy < AMOUNTY; iy ++ ) {
+
+						particle = particles[ i ++ ] = new THREE.Mesh( new THREE.CubeGeometry( 10,10,10, 1,1,1), material );
+						particle.position.x = ix * SEPARATION - ( ( AMOUNTX * SEPARATION ) / 2 );
+						particle.position.z = iy * SEPARATION - ( ( AMOUNTY * SEPARATION ) / 2 );
+						scene.add( particle );
+
+					}
+
+				}
+
+				renderer = new THREE.CanvasRenderer();
+				renderer.setSize( width, height );
+				 //container.appendChild( renderer.domElement );
+
+				effect = new THREE.AsciiEffect( renderer );
+				effect.setSize( width, height );
+				container.appendChild( effect.domElement );
+
+				
+
+				document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+				document.addEventListener( 'touchstart', onDocumentTouchStart, false );
+				document.addEventListener( 'touchmove', onDocumentTouchMove, false );
+
+				//
+
+				window.addEventListener( 'resize', onWindowResize, false );
+
+			}
+
+			function onWindowResize() {
+
+				windowHalfX = window.innerWidth / 2;
+				windowHalfY = window.innerHeight / 2;
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				effect.setSize( window.innerWidth, window.innerHeight );
+
+			}
+
+			//
+
+			function onDocumentMouseMove( event ) {
+
+				mouseX = event.clientX - windowHalfX;
+				mouseY = event.clientY - windowHalfY;
+
+			}
+
+			function onDocumentTouchStart( event ) {
+
+				if ( event.touches.length === 1 ) {
+
+					event.preventDefault();
+
+					mouseX = event.touches[ 0 ].pageX - windowHalfX;
+					mouseY = event.touches[ 0 ].pageY - windowHalfY;
+
+				}
+
+			}
+
+			function onDocumentTouchMove( event ) {
+
+				if ( event.touches.length === 1 ) {
+
+					event.preventDefault();
+
+					mouseX = event.touches[ 0 ].pageX - windowHalfX;
+					mouseY = event.touches[ 0 ].pageY - windowHalfY;
+
+				}
+
+			}
+
+			//
+
+			function animate() {
+
+				requestAnimationFrame( animate );
+
+				render();
+				
+
+			}
+
+			function render() {
+
+				camera.position.x += ( mouseX - camera.position.x ) * .05;
+				camera.position.y += ( - mouseY - camera.position.y ) * .05;
+				camera.lookAt( scene.position );
+
+				var i = 0;
+
+				for ( var ix = 0; ix < AMOUNTX; ix ++ ) {
+
+					for ( var iy = 0; iy < AMOUNTY; iy ++ ) {
+
+						particle = particles[ i++ ];
+						particle.position.y = ( Math.sin( ( ix + count ) * 0.3 ) * 50 ) +
+							( Math.sin( ( iy + count ) * 0.5 ) * 50 );
+						particle.scale.x = particle.scale.y = ( Math.sin( ( ix + count ) * 0.3 ) + 1 ) * 4 +
+							( Math.sin( ( iy + count ) * 0.5 ) + 1 ) * 4;
+
+					}
+
+				}
+
+				effect.render( scene, camera );
+
+				count += 0.1;
+
+			}
+
+		</script>
+		<nav class="navbar  navbar-fixed-top" role="navigation">
+  				<div class="container left">
+  				<a href="#chi"><h4>Chi sono?</h4></a>
+  				<a href="#interessi"><h4>Interessi</h4></a>
+  				<a href="#progetti"><h4>Progetti</h4></a>
+  				<a href="#contatti"><h4>Contatti</h4></a>
+    			
+  				</div>
+			</nav>
+
+		<div class=""style="z-index:100; background-color: rgba(255,255,255,0.88);position: absolute; top:100%; left:30%; width:70%; color:#000000; padding:50px;">
+
+			
+			<div id="chi" class="titolo">
+				<h1>Chi sono?</h1>
+				<img src="img/io.jpg" alt="">
+			
+			</div>
+			<div id="interessi" class="titolo">
+				<h1>Interessi</h1>
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum blanditiis numquam possimus commodi totam porro ducimus repellendus natus voluptas debitis nemo sint obcaecati beatae cumque quod, sed sequi, ad unde soluta quia non. Illo delectus dignissimos vitae numquam saepe animi placeat, ipsa eum. Doloribus, voluptate accusamus mollitia nesciunt consequuntur nihil odit harum totam necessitatibus ratione eligendi culpa vitae consectetur, nobis in omnis distinctio esse labore inventore, autem, delectus! Eveniet hic tempore animi repellendus neque, velit deserunt debitis sed voluptas! A, sapiente. Harum repudiandae sed suscipit voluptate reiciendis, quam officia et nihil nesciunt doloribus dolorum laborum? Debitis neque, harum quia, voluptate aut at asperiores sint eius eveniet. Voluptate, ipsa. Quibusdam neque, fugit velit facere, sed inventore dolores, similique fugiat tempore vel voluptatem. Deleniti voluptas ullam sequi eligendi, blanditiis, molestias doloremque tempore eos vitae assumenda accusamus minus molestiae officiis voluptate dolorum doloribus hic consectetur dolores praesentium. Porro veritatis assumenda ex. Temporibus libero consectetur voluptatibus laborum magnam, labore iusto repellat eligendi eos blanditiis nisi saepe fugiat perferendis non deserunt omnis cum enim explicabo similique vel.</p>
+			</div>
+			<div id="progetti"class="titolo"><h1>Progetti</h1>
+			<p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum blanditiis numquam possimus commodi totam porro ducimus repellendus natus voluptas debitis nemo sint obcaecati beatae cumque quod, sed sequi, ad unde soluta quia non. Illo delectus dignissimos vitae numquam saepe animi placeat, ipsa eum. Doloribus, voluptate accusamus mollitia nesciunt consequuntur nihil odit harum totam necessitatibus ratione eligendi culpa vitae consectetur, nobis in omnis distinctio esse labore inventore, autem, delectus! Eveniet hic tempore animi repellendus neque, velit deserunt debitis sed voluptas! A, sapiente. Harum repudiandae sed suscipit voluptate reiciendis, quam officia et nihil nesciunt doloribus dolorum laborum? Debitis neque, harum quia, voluptate aut at asperiores sint eius eveniet. Voluptate, ipsa. Quibusdam neque, fugit velit facere, sed inventore dolores, similique fugiat tempore vel voluptatem. Deleniti voluptas ullam sequi eligendi, blanditiis, molestias doloremque tempore eos vitae assumenda accusamus minus molestiae officiis voluptate dolorum doloribus hic consectetur dolores praesentium. Porro veritatis assumenda ex. Temporibus libero consectetur voluptatibus laborum magnam, labore iusto repellat eligendi eos blanditiis nisi saepe fugiat perferendis non deserunt omnis cum enim explicabo similique vel. Iste dicta, obcaecati sunt inventore qui quasi necessitatibus laboriosam quidem repellat, pariatur asperiores odio eveniet fugit reprehenderit, ex harum! Temporibus asperiores, quibusdam aperiam voluptatum perspiciatis voluptatem alias quia, corporis vel fuga molestiae obcaecati ipsum, magnam iusto. Fugiat fugit earum velit deleniti atque architecto officia eius asperiores quam, a esse tenetur magnam delectus, perspiciatis provident. Sint omnis, ipsa saepe ipsum amet illo consequuntur. Quae, quasi. Possimus odio beatae aliquid, consequuntur distinctio reiciendis architecto maiores ipsum amet illum, iusto mollitia reprehenderit id necessitatibus in. Assumenda quod culpa vitae, repellendus quo debitis reprehenderit ipsa error cumque a molestias similique dignissimos delectus nostrum qui ad at, possimus, nobis. Suscipit error accusamus obcaecati accusantium ullam. Animi, nostrum, a. Ipsum, perferendis numquam neque nisi est ducimus quis, vel, cupiditate aliquid culpa quia totam adipisci aperiam inventore, rem odio alias porro doloremque blanditiis. Quo delectus, rem similique saepe incidunt aut, iste eaque fugiat ullam explicabo quidem ratione qui. Eveniet exercitationem, nostrum architecto optio laborum beatae ipsum magnam, saepe dignissimos ipsam neque, dolore fugiat soluta iure laudantium explicabo maxime voluptatum culpa inventore alias dolor incidunt! Ducimus soluta neque, pariatur odio dolores sit voluptatibus nihil, vel in perspiciatis tenetur ut eius molestias fugiat! Natus nesciunt ea dolor qui nulla ex aliquam, debitis beatae similique neque maiores culpa voluptate fugit minima, omnis pariatur, laudantium error iusto hic voluptatibus ipsa. Hic quae voluptates facere nesciunt incidunt ipsum eum pariatur, blanditiis molestias consequuntur ipsam dicta cupiditate beatae ipsa ab, fugiat sunt odit enim dolorem, aliquid atque dolore perspiciatis dolores illo. Suscipit inventore odit itaque, illo, minima quas eaque commodi eius. In incidunt nostrum vel debitis velit quidem earum minus est voluptas nisi nam officia voluptates expedita odit, voluptatibus sapiente adipisci impedit molestias nemo. Placeat assumenda architecto, nam vitae magni id ea consequatur mollitia, excepturi hic consequuntur laborum quis perferendis facere. Quidem sint aut nemo aliquid quas, et vitae impedit saepe aperiam earum ut dolorem, adipisci, harum quae numquam magnam officia mollitia aliquam reprehenderit? Soluta ullam quo, et pariatur facere odit libero, eos officiis doloremque voluptas deserunt, ipsum, explicabo ut dolores debitis tempora error eum obcaecati repudiandae architecto distinctio! Quidem rem omnis dolor iusto eligendi commodi blanditiis labore eius pariatur assumenda quo harum consequatur cupiditate incidunt dignissimos eos adipisci, molestias sapiente nesciunt, quibusdam sequi asperiores ipsum natus voluptatum? Architecto enim aspernatur eaque illo eos possimus quam dolores, laboriosam voluptate quaerat, quos soluta dolorem! Laudantium unde sint dicta sunt libero, maxime, minus blanditiis iusto! Voluptas eaque, dolore repellat excepturi quia pariatur magnam officia, ipsum cupiditate amet, nam ipsam magni a eum, fuga? Illum maxime, quo libero quam consequatur, laboriosam quos dignissimos magni culpa aspernatur voluptas adipisci obcaecati blanditiis, iste non saepe deserunt error quibusdam nihil sequi necessitatibus molestiae quae ipsam facere. Asperiores vel incidunt accusantium vitae culpa eaque cum eveniet dolorum labore impedit aut explicabo porro distinctio soluta cumque excepturi mollitia dolor, deleniti modi. Blanditiis non ipsam tempora, repellat fugit architecto nobis, asperiores obcaecati natus dolor fugiat illo quisquam voluptates impedit laboriosam tenetur pariatur necessitatibus perferendis. Veritatis, laudantium, iusto? Temporibus aliquid, nihil. Officiis doloribus accusan </p></div>
+			<div id="contatti"class="titolo"><h1>Contatti</h1>
+			<p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum blanditiis numquam possimus commodi totam porro ducimus repellendus natus voluptas debitis nemo sint obcaecati beatae cumque quod, sed sequi, ad unde soluta quia non. Illo delectus dignissimos vitae numquam saepe animi placeat, ipsa eum. Doloribus, voluptate accusamus mollitia nesciunt consequuntur nihil odit harum totam necessitatibus ratione eligendi culpa vitae consectetur, nobis in omnis distinctio esse labore inventore, autem, delectus! Eveniet hic tempore animi repellendus neque, velit deserunt debitis sed voluptas! A, sapiente. Harum repudiandae sed suscipit voluptate reiciendis, quam officia et nihil nesciunt doloribus dolorum laborum? Debitis neque, harum quia, voluptate aut at asperiores sint eius eveniet. Voluptate, ipsa. Quibusdam neque, fugit velit facere, sed inventore dolores, similique fugiat tempore vel voluptatem. Deleniti voluptas ullam sequi eligendi, blanditiis, molestias doloremque tempore eos vitae assumenda accusamus minus molestiae officiis voluptate dolorum doloribus hic consectetur dolores praesentium. Porro veritatis assumenda ex. Temporibus libero consectetur voluptatibus laborum magnam, labore iusto repellat eligendi eos blanditiis nisi saepe fugiat perferendis non deserunt omnis cum enim explicabo similique vel. Iste dicta, obcaecati sunt inventore qui quasi necessitatibus laboriosam quidem repellat, pariatur asperiores odio eveniet fugit reprehenderit, ex harum! Temporibus asperiores, quibusdam aperiam voluptatum perspiciatis voluptatem alias quia, corporis vel fuga molestiae obcaecati ipsum, magnam iusto. Fugiat fugit earum velit deleniti atque architecto officia eius asperiores quam, a esse tenetur magnam delectus, perspiciatis provident. Sint omnis, ipsa saepe ipsum amet illo consequuntur. Quae, quasi. Possimus odio beatae aliquid, consequuntur distinctio reiciendis architecto maiores ipsum amet illum, iusto mollitia reprehenderit id necessitatibus in. Assumenda quod culpa vitae, repellendus quo debitis reprehenderit ipsa error cumque a molestias similique dignissimos delectus nostrum qui ad at, possimus, nobis. Suscipit error accusamus obcaecati accusantium ullam. Animi, nostrum, a. Ipsum, perferendis numquam neque nisi est ducimus quis, vel, cupiditate aliquid culpa quia totam adipisci aperiam inventore, rem odio alias porro doloremque blanditiis. Quo delectus, rem similique saepe incidunt aut, iste eaque fugiat ullam explicabo quidem ratione qui. Eveniet exercitationem, nostrum architecto optio laborum beatae ipsum magnam, saepe dignissimos ipsam neque, dolore fugiat soluta iure laudantium explicabo maxime voluptatum culpa inventore alias dolor incidunt! Ducimus soluta neque, pariatur odio dolores sit voluptatibus nihil, vel in perspiciatis tenetur ut eius molestias fugiat! Natus nesciunt ea dolor qui nulla ex aliquam, debitis beatae similique neque maiores culpa voluptate fugit minima, omnis pariatur, laudantium error iusto hic voluptatibus ipsa. Hic quae voluptates facere nesciunt incidunt ipsum eum pariatur, blanditiis molestias consequuntur ipsam dicta cupiditate beatae ipsa ab, fugiat sunt odit enim dolorem, aliquid atque dolore perspiciatis dolores illo. Suscipit inventore odit itaque, illo, minima quas eaque commodi eius. In incidunt nostrum vel debitis velit quidem earum minus est voluptas nisi nam officia voluptates expedita odit, voluptatibus sapiente adipisci impedit molestias nemo. Placeat assumenda architecto, nam vitae magni id ea consequatur mollitia, excepturi hic consequuntur laborum quis perferendis facere. Quidem sint aut nemo aliquid quas, et vitae impedit saepe aperiam earum ut dolorem, adipisci, harum quae numquam magnam officia mollitia aliquam reprehenderit? Soluta ullam quo, et pariatur facere odit libero, eos officiis doloremque voluptas deserunt, ipsum, explicabo ut dolores debitis tempora error eum obcaecati repudiandae architecto distinctio! Quidem rem omnis dolor iusto eligendi commodi blanditiis labore eius pariatur assumenda quo harum consequatur cupiditate incidunt dignissimos eos adipisci, molestias sapiente nesciunt, quibusdam sequi asperiores ipsum natus voluptatum? Architecto enim aspernatur eaque illo eos possimus quam dolores, laboriosam voluptate quaerat, quos soluta dolorem! Laudantium unde sint dicta sunt libero, maxime, minus blanditiis iusto! Voluptas eaque, dolore repellat excepturi quia pariatur magnam officia, ipsum cupiditate amet, nam ipsam magni a eum, fuga? Illum maxime, quo libero quam consequatur, laboriosam quos dignissimos magni culpa aspernatur voluptas adipisci obcaecati blanditiis, iste non saepe deserunt error quibusdam nihil sequi necessitatibus molestiae quae ipsam facere. Asperiores vel incidunt accusantium vitae culpa eaque cum eveniet dolorum labore impedit aut explicabo porro distinctio soluta cumque excepturi mollitia dolor, deleniti modi. Blanditiis non ipsam tempora, repellat fugit architecto nobis, asperiores obcaecati natus dolor fugiat illo quisquam voluptates impedit laboriosam tenetur pariatur necessitatibus perferendis. Veritatis, laudantium, iusto? Temporibus aliquid, nihil. Officiis doloribus accusan </p></div>
+		</div>
+		
+	</body>
+</html>
