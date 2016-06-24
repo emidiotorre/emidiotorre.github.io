@@ -29,6 +29,25 @@
 			table *{
 				color: #FFFFFF;
 			}
+			.content{
+				z-index:100;
+				position: absolute;
+				top:0;
+				left:0%;
+				width:30%;
+				height:100%;
+				color:#FFFFFF;
+				padding:50px;
+			}
+			@media screen and (max-width:1000px){
+				.content{
+					width:100%;
+					padding:10px;
+				}
+				.container{
+					display:none;
+				}
+			}
 			#chi{
 				display:flex;
 				flex-direction: column;
@@ -37,6 +56,19 @@
 				list-style: none;
 				padding: 0
 			}
+			a:link {
+    		color: white;
+      }
+      a:visited {
+          color: white;
+      }
+      a:hover {
+          color: white;
+      }
+      a:active {
+          color: white;
+      }
+
 			#menu li a{
 				text-decoration: none;
 				color: white;
@@ -70,7 +102,7 @@
 
 
 
-		<div class=""style="z-index:100; position: absolute; top:0; left:0%; width:30%; height:100%; color:#FFFFFF; padding:50px;">
+		<div class="content">
 
 
 			<div id="chi" class="titolo text-center">
@@ -78,11 +110,11 @@
 					<h1>Hi, I'm Emidio!</h1>
 					<p>
 						I'm an interaction designer and front-end developer,
-						but most of all i'm a passionate explorer of the world!
+						but most of all i'm a passionate explorer!
+						Friends call me Em Tower.
 					</p>
 				</div>
 				<ul id="menu">
-					<li><a class="menu-item" onclick="toggleVisibility('test3');">Blog</a></li>
 					<li><a class="menu-item" onclick="toggleVisibility('test1');">Bio</a></li>
 					<li><a class="menu-item" onclick="toggleVisibility('test2');">Works</a></li>
 					<li><a class="menu-item" onclick="toggleVisibility('test3');">Contact Me</a></li>
@@ -99,10 +131,10 @@
 					</div>
 					<div id="test2" class="item invisible">
 						<ul>
-							<li>VIVI.CITY</li>
-							<li>B&B FORTE LA CARNALE</li>
-							<li>QUEEXO</li>
-							<li>ITALIAN KINGDOM</li>
+							<li><a href="http://vivi.city">VIVI.CITY</a></li>
+							<li><a href="http://www.bbsalernofortelacarnale.it">B&B FORTE LA CARNALE</a></li>
+							<li><a href="http://www.queexo.com">QUEEXO</a></li>
+							<li><a href="http://www.italiankingdom.com">ITALIAN KINGDOM (V2 coming soon)</a></li>
 						</ul>
 					</div>
 					<div id="test3" class="item invisible">
