@@ -42,7 +42,7 @@
 
 				container.appendChild(info);
 
-				camera = new THREE.PerspectiveCamera( 35, width / height, 1, 1000 );
+				camera = new THREE.PerspectiveCamera( 65, width / height, 1, 1000 );
 				camera.position.y = 150;
 				camera.position.z = 500;
 
