@@ -1,21 +1,18 @@
 var itemsArray;
-(function(){
-var timer = 0;
-function load()
-{
-    if(document.readyState==='complete')
-    {
-        clearTimeout(timer);
-        itemsArray = [].slice.call(document.getElementsByClassName('item'));
-    }
+
+ready(function(){
+   itemsArray = [].slice.call(document.getElementsByClassName('item'));
+})
+
+function ready(fn) {
+  if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading"){
+    fn();
+  } else {
+    document.addEventListener('DOMContentLoaded', fn);
+  }
 }
-timer = setTimeout(load,100);
-})();
 
 function toggleVisibility (id) {
-
-
-  console.log(itemsArray);
   itemsArray.filter(function(el){
     if(!el.classList.contains('invisible')){
       el.classList.add('invisible');
