@@ -1,14 +1,14 @@
 # Site settings
-title:          Tale
-description:    "Minimal Jekyll theme for storytellers"
-baseurl:        "/tale"
-url:            "https://chesterhow.github.io"
+title:          Emidio Torre
+description:    "Developer"
+baseurl:        ""
+url:            "https://emidiotorre.it"
 
 # Author
 author:
-  name:         Chester How
-  url:          https://chester.how
-  email:        chesterhow@gmail.com
+  name:         Emidio Torre
+  url:          https://emidiotorre.it
+  email:        emidio.torre@gmail.com
 
 # Build settings
 markdown:       kramdown

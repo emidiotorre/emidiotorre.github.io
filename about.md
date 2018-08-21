@@ -1,15 +1,21 @@
 ---
 layout: post
 title: "About"
-author: "Chester"
+author: "Emidio"
 permalink: /about/
 ---
 
-A friend of mine writes short stories. One sunny day, I asked if he wanted a website to showcase his works and he agreed. I decided to use GitHub Pages to host his site. That way he wouldn't have to buy a domain and a server.
+Hi, 😎
+I'm a web developer based in Bari.
 
-While doing some research up on GitHub Pages, I accidentally chanced upon this _simple, blog-aware, static site generator_ called [Jekyll](https://jekyllrb.com/) which works really well with GitHub Pages. I figured it would do just fine for my friend and I set about searching for a pretty theme. I wanted a theme with a _book-ish_ vibe. Unfortunately, most of the themes were too modern. Eventually, I caved and begun working on my own theme. With the help of [Poole](https://github.com/poole/poole), the Jekyll Butler, I was able to build **Tale**.
+I'm currently working with [Kirby](http://getkirby.com), [Django](https://www.djangoproject.com/) and [Vue](https://vuejs.org/).
 
-## Contribute
-Feel free to create an issue or make a pull request on [GitHub](https://github.com/chesterhow/tale).
+In my spare time i like to experiment with new technologies and languages such as [TensorFlow](https://www.tensorflow.org/) and [Go](https://golang.org/).
+
+I am a self taught technologist, courious about the bits and bolts that make this digital world work.
+
+I graduated in Industrial Design at the Polytechnic University of Milan, but during my studies i have developed my tech interest and started working in the field as a freelancer.
+
+You can follow me on [Twitter](https://twitter.com/emidiotorre).
 
 Thanks for reading!
