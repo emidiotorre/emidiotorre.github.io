@@ -1,7 +1,6 @@
 # Site settings
 title:          Emidio Torre
 description:    "Developer"
-baseurl:        ""
 url:            "https://emidiotorre.it"
 
 # Author
