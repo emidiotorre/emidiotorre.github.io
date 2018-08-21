@@ -11,10 +11,10 @@ body {
 }
 
 html {
-  font-family: $serif-primary;
+  font-family: $sans-serif;
   font-size: 14px;
   overflow-y: scroll;
-
+  
   @media (min-width: 600px) {
     font-size: 16px;
   }
@@ -30,8 +30,8 @@ h3,
 h4,
 h5,
 h6 {
+  font-family: $serif-primary;
   color: $default-shade;
-  font-family: $sans-serif;
   line-height: normal;
 }
 

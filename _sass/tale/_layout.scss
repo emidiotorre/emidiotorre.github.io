@@ -29,7 +29,8 @@ footer,
     display: inline-block;
     margin: 0;
     padding-right: .2rem;
-
+    font-family: $sans-serif;
+    font-size: 1rem;
     &:hover,
     &:focus {
       opacity: .6;

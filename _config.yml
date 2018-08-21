@@ -1,12 +1,12 @@
 # Site settings
-title:          Emidio Torre
+title:          Emidio
 description:    "Developer"
 url:            "https://emidiotorre.it"
 
 # Author
 author:
   name:         Emidio Torre
-  url:          http://www.emidiotorre.it
+  url:          https://www.emidiotorre.it
   email:        emidio.torre@gmail.com
 
 # Build settings
